@@ -1,0 +1,4 @@
+export const reducerCase = {
+    SET_WEATHER:"SET_WEATHER",
+    SET_SEARCH_LOCATION:"SET_SEARCH_LOCATION"
+}

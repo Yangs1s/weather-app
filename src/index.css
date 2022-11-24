@@ -1,0 +1,20 @@
+body {
+  margin: 0;
+  padding:0;
+  box-sizing: border-box;
+  font-family:Century 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+p{
+  margin: 0;
+}
+#root{
+  background-image: url('./assets/IMG_0430.jpeg');
+  background-position: center;
+}
