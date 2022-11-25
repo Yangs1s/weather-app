@@ -27,12 +27,14 @@ export default Footer;
 const Container = styled.footer`
     display: flex;
     bottom: 0;
+    width: 470px;
     opacity: 0.95;
     align-items: center;
     justify-content: center;
     margin-top: 2px;
     font-weight:bold;
     .foot_wrapper{
+        width: 100%;
         display: flex;  
         color:#fff;
         background: #9a9999;
@@ -41,8 +43,10 @@ const Container = styled.footer`
         margin-bottom: 10px;
         .item{
             display: flex;
+            justify-content: center;
+            align-items: center;
             flex-direction: column;
-            padding: 1.16rem 1.85rem;
+            padding: 10px 30px;
             font-size: 1.3em;
 
             span{
@@ -57,7 +61,7 @@ const Container = styled.footer`
         }
         .humidity,.feelsLike,.windSpeed{
             font-weight: 400;
-            font-size: 1.8em;
+            font-size: 1.4em;
         }
     }
 `

@@ -1,7 +1,7 @@
 
 import styled from '@emotion/styled';
 import axios from 'axios';
-import { ChangeEvent, KeyboardEvent, useState } from 'react';
+import { ChangeEvent, FormEvent} from 'react';
 import { reducerCase } from './Weathers/Constants';
 import { useWeatherProvider } from './Weathers/WeatherProvider';
 
@@ -9,33 +9,36 @@ import { useWeatherProvider } from './Weathers/WeatherProvider';
 const API_KEY = process.env.REACT_APP_API_KEY
 
 const Header = () => {
-    
-    const [{searchLocation},dispatch] = useWeatherProvider();
-    console.log(searchLocation)
-    const searchCity = async (event:KeyboardEvent) =>{
-        event.preventDefault()
-        if(event.key === 'Enter'){
-        await axios
-            .get(`https://api.openweathermap.org/data/2.5/weather?q=${searchLocation}&appid=${API_KEY}`)
-            .then((response) =>{  
-            const data = response.data
-            const searchLocation = {
-                city:data.name,
-            }
-            console.log(searchLocation)
-            dispatch({type:reducerCase.SET_SEARCH_LOCATION,searchLocation})
-        }
-            )
-              
-        }
-    }
+    const [{wethers,location},dispatch] = useWeatherProvider();
 
     const handleChange = (event:ChangeEvent<HTMLInputElement>) =>{
-        dispatch({type:reducerCase.SET_SEARCH_LOCATION,searchLocation:event.currentTarget.value})
+        event.preventDefault()
+        dispatch({type:reducerCase.SET_SEARCH_LOCATION,location:event.currentTarget.value})
+        console.log(event.target.value)
     }
+
+    const searchCity = async (event:FormEvent) =>{
+        event.preventDefault()
+        await axios
+            .get(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}`)
+        .then((response) =>{
+            const data = response.data
+            console.log(data)
+            const location = {
+                cityName:data.name
+            }
+            dispatch({type:reducerCase.SET_SEARCH_LOCATION,location:location.cityName})
+        })
+        
+    }
+    
+
     return (
         <Container>
-            <input value={searchLocation} type="text" onChange={handleChange} placeholder='Search Location' onKeyPress={searchCity}/>
+            <form onSubmit={searchCity}>
+            <input value={location.cityName} onChange={handleChange} type="text" placeholder='Search Location'/>
+            <button type='submit'>검색</button>
+            </form>
         </Container>
     );
 };

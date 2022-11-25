@@ -7,13 +7,14 @@ export type WeatherType ={
         status:string
 }
 
+
 export type WeatherStateType = {
     weathers:WeatherType[]
 }
 
 export const initialState = {
     weathers:[],
-    searchLocation:null,
+    location:'seoul'
 }
 
 
@@ -28,7 +29,7 @@ const reducer = (state:WeatherStateType,action:any) =>{
         case reducerCase.SET_SEARCH_LOCATION:
            return{
                 ...state,
-                searchLocation:action.searchLocation,
+                location:action.location,
            } 
         
         default:

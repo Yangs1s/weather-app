@@ -1,50 +1,46 @@
 import styled from '@emotion/styled'
-import {BsFillSunFill} from 'react-icons/bs'
 import { useEffect } from "react";
 import axios from 'axios';
-import { WeatherType } from './Weathers/WeatherReducer';
 import { useWeatherProvider } from './Weathers/WeatherProvider';
 import { reducerCase } from './Weathers/Constants';
 
 
 
 const API_KEY = process.env.REACT_APP_API_KEY
-const CITY_NAME = "London"
+
 
 
 const Weather = () => {
-    const [{weathers},dispatch] = useWeatherProvider();
+    const [{weathers,location},dispatch] = useWeatherProvider();
 
     useEffect(()=>{
         const getWeather = async() =>{
-          const response = await  axios
-                .get(`https://api.openweathermap.org/data/2.5/weather?q=${CITY_NAME}&appid=${API_KEY}`)    
-                    const data  = response.data;
+                   const response = await  axios
+                    .get(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}`)
+                        const data  = response.data;
+                        console.log(data)
+                        const weathers = {
+                            id:data.id,
+                            temperature:data.main.temp,
+                            maxTemp:data.main.temp_max,
+                            minTemp:data.main.temp_min,
+                            cityName:data.name,
+                            status:data.weather[0].main,
+                            humidity:data.main.humidity,
+                            feelsLike:data.main.feels_like,
+                            windSpeed:data.wind.speed,
+                            icon:data.weather[0].icon
+                        }
+                        console.log(location)
+                        dispatch({type:reducerCase.SET_WEATHER,weathers})
+                        dispatch({type:reducerCase.SET_SEARCH_LOCATION,location:weathers.cityName})
+               } 
 
-                    const weathers = {
-                        id:data.id,
-                        temperature:data.main.temp,
-                        maxTemp:data.main.temp_max,
-                        minTemp:data.main.temp_min,
-                        cityName:data.name,
-                        status:data.weather[0].main,
-                        humidity:data.main.humidity,
-                        feelsLike:data.main.feels_like,
-                        windSpeed:data.wind.speed,
-                        icon:data.weather[0].icon
-                    }
-                    dispatch({type:reducerCase.SET_WEATHER,weathers})
-                
-        }
         getWeather();
-    },[])
+    },[location,dispatch])
     
 
-
-
-    
-
-    return (
+    return ( 
         <Container>
             <div className="city_area">
                 <span className="city_name">
@@ -100,6 +96,7 @@ const Container = styled.div`
             display: flex;
             text-align: center;
             flex-direction: column;
+            margin-top: 3em;
             .temperture{
                 font-size: 5em;
                 font-weight: 300;
