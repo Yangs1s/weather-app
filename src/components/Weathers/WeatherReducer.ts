@@ -32,7 +32,7 @@ const reducer = (state:WeatherStateType,action:any) =>{
            } 
         
         default:
-            break;
+            return state;
     }
 }
 

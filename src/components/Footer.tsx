@@ -1,10 +1,7 @@
 import styled from "@emotion/styled";
 import { useWeatherProvider } from "./Weathers/WeatherProvider";
 const Footer = () => {
-
     const [{weathers},dispatch] = useWeatherProvider();
-    
-    console.log(weathers)
     return (
         <Container>
             <div className="foot_wrapper">

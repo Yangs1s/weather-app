@@ -1,33 +1,41 @@
 
 import styled from '@emotion/styled';
 import axios from 'axios';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { reducerCase } from './Weathers/Constants';
 import { useWeatherProvider } from './Weathers/WeatherProvider';
 
 
-const API_KEY = 'f297a5cf135d14cbc5d2dd7186bbb686'
+const API_KEY = process.env.REACT_APP_API_KEY
 
 const Header = () => {
     
     const [{searchLocation},dispatch] = useWeatherProvider();
-
-    const searchCity = (event:KeyboardEvent) =>{
+    console.log(searchLocation)
+    const searchCity = async (event:KeyboardEvent) =>{
+        event.preventDefault()
         if(event.key === 'Enter'){
-            axios
-            .get(`https://api.openweathermap.org/data/2.5/weather?q=${searchLocation}&appid=${API_KEY}`)    
-            .then((response) =>{
-                dispatch({type:reducerCase.SET_SEARCH_LOCATION,searchLocation})
-            })
+        await axios
+            .get(`https://api.openweathermap.org/data/2.5/weather?q=${searchLocation}&appid=${API_KEY}`)
+            .then((response) =>{  
+            const data = response.data
+            const searchLocation = {
+                city:data.name,
+            }
+            console.log(searchLocation)
+            dispatch({type:reducerCase.SET_SEARCH_LOCATION,searchLocation})
+        }
+            )
+              
         }
     }
 
-    const handleChange = (event:ChangeEvent) =>{
-
+    const handleChange = (event:ChangeEvent<HTMLInputElement>) =>{
+        dispatch({type:reducerCase.SET_SEARCH_LOCATION,searchLocation:event.currentTarget.value})
     }
     return (
         <Container>
-            <input type="text" onChange={handleChange} placeholder='Search Location'/>
+            <input value={searchLocation} type="text" onChange={handleChange} placeholder='Search Location' onKeyPress={searchCity}/>
         </Container>
     );
 };

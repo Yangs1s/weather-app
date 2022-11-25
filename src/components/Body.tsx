@@ -7,9 +7,6 @@ import Footer from "./Footer";
 
 
 const Body = () => {
-
-    
-
     return (
         <Container>
             <Header/>
@@ -39,7 +36,7 @@ const Container = styled.section`
         border-top-right-radius: 10px;
 
         opacity: 0.95;
-        padding: 4em 7em 10em;
+        padding: 4em 7.3em 10em;
 
     }
     `

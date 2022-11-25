@@ -9,7 +9,7 @@ import { reducerCase } from './Weathers/Constants';
 
 
 const API_KEY = process.env.REACT_APP_API_KEY
-const CITY_NAME = "Busan"
+const CITY_NAME = "London"
 
 
 const Weather = () => {
@@ -20,21 +20,25 @@ const Weather = () => {
           const response = await  axios
                 .get(`https://api.openweathermap.org/data/2.5/weather?q=${CITY_NAME}&appid=${API_KEY}`)    
                     const data  = response.data;
-                    console.log(data)
+
                     const weathers = {
                         id:data.id,
                         temperature:data.main.temp,
+                        maxTemp:data.main.temp_max,
+                        minTemp:data.main.temp_min,
                         cityName:data.name,
                         status:data.weather[0].main,
                         humidity:data.main.humidity,
                         feelsLike:data.main.feels_like,
-                        windSpeed:data.wind.speed
+                        windSpeed:data.wind.speed,
+                        icon:data.weather[0].icon
                     }
                     dispatch({type:reducerCase.SET_WEATHER,weathers})
                 
         }
         getWeather();
     },[])
+    
 
 
 
@@ -50,7 +54,7 @@ const Weather = () => {
             <div className="weather_info">
                 <div className="weather_status">
                     <div className="weather_icon">
-                        <BsFillSunFill/>
+                        <img src={`http://openweathermap.org/img/wn/${weathers.icon}.png`} alt="weathercondition" />
                     </div>
                 </div>
                 <div className="weather_temperture">
@@ -59,6 +63,10 @@ const Weather = () => {
                     </p>
                     <p className='state'>{weathers.status}</p>
                 </div>
+            </div>
+            <div className="max_min_temp">
+                <div className="max_temp"><b>MAX:</b> {(weathers.maxTemp -273.15).toFixed(1)}℃</div>
+                <div className="min_temp"><b>MIN:</b> {(weathers.minTemp -273.15).toFixed(1)}℃</div>
             </div>
         </Container>
     );
@@ -78,9 +86,14 @@ const Container = styled.div`
         margin-top: 2em;
         .weather_status{
             display: flex;
-            text-align: center;
+            justify-content: center;
             .weather_icon{
-                font-size: 15em;
+                display: flex;
+                img{
+                    margin: auto;
+                    width: 50px;
+                    height: 50px;
+                }
             }
         }
         .weather_temperture{
@@ -111,5 +124,15 @@ const Container = styled.div`
             font-size:3em;
         }
     }
-
+    .max_min_temp{
+        display: flex;
+        justify-content: center;
+        div{
+            margin: 10px;
+            b{
+                font-weight: bold;
+                font-size: 20px;
+            }
+        }
+    }
 `
